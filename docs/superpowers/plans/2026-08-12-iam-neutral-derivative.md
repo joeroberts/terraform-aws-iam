@@ -137,16 +137,28 @@ byte-identical to upstream.
 Run:
 
 ```bash
-rsync -a --exclude .git "$iam_import_root/source/" ./
+rsync -a --exclude='/.git/' "$iam_import_root/source/" ./
 test -f LICENSE
 test -f README.md
 test -d modules
 test -d examples
 test -d wrappers
 test -f docs/superpowers/plans/2026-08-12-iam-neutral-derivative.md
-iam_task1_import_diff=$(mktemp)
-if diff -qr --exclude=.git --exclude=.superpowers --exclude=superpowers \
-  "$iam_import_root/source" . > "$iam_task1_import_diff"; then
+iam_task1_parity_root=$(mktemp -d)
+mkdir -p "$iam_task1_parity_root/source" "$iam_task1_parity_root/target"
+for iam_task1_parity_source in "$iam_import_root/source/" ./; do
+  if test "$iam_task1_parity_source" = "$iam_import_root/source/"; then
+    iam_task1_parity_destination="$iam_task1_parity_root/source/"
+  else
+    iam_task1_parity_destination="$iam_task1_parity_root/target/"
+  fi
+  rsync -a --exclude='/.git/' --exclude='/.superpowers/' \
+    --exclude='/docs/superpowers/' "$iam_task1_parity_source" \
+    "$iam_task1_parity_destination"
+done
+iam_task1_import_diff="$iam_task1_parity_root/diff"
+if diff -qr "$iam_task1_parity_root/source" \
+  "$iam_task1_parity_root/target" > "$iam_task1_import_diff"; then
   printf 'imported snapshot unexpectedly has no allowed documentation differences\n' >&2
   exit 1
 else
@@ -154,16 +166,18 @@ else
 fi
 test "$(wc -l < "$iam_task1_import_diff" | tr -d ' ')" = "2"
 test "$(sed -n \
-  "s|^Files $iam_import_root/source/\\(.*\\) and \\./\\1 differ$|\\1|p" \
+  "s|^Files $iam_task1_parity_root/source/\\(.*\\) and $iam_task1_parity_root/target/\\1 differ$|\\1|p" \
   "$iam_task1_import_diff" | sort)" = "$iam_task1_allowed_files"
 ```
 
 Expected: the upstream tree is present, the planning documents remain present, and no upstream `.git` directory was copied.
 
-The executable imported-snapshot parity check excludes only repository and
-planning artifacts (`.git`, `.superpowers`, and `docs/superpowers`) and proves
-the same non-HCL neutrality-edit allowlist as the temporary snapshot: only
-`README.md` and `CHANGELOG.md` may differ from upstream for neutrality.
+The executable imported-snapshot parity check uses the same root-anchored
+rsync filters for both source and target copies. It excludes only root
+repository and planning artifacts (`/.git/`, `/.superpowers/`, and
+`/docs/superpowers/`) and proves the same non-HCL neutrality-edit allowlist as
+the temporary snapshot: only `README.md` and `CHANGELOG.md` may differ from
+upstream for neutrality.
 `CHANGELOG.md` retains the dated HTML notice as its first line; every `*.tf`
 remains byte-identical.
 
