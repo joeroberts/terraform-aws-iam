@@ -40,6 +40,11 @@
 
 ### Task 1: Sanitized Snapshot Import and Provenance
 
+**Required resumption gate:** Commit and push this documentation-only
+authorization amendment to `neutral/v6.8.0-neutral.1` without force before
+running or resuming any Task 1 command. Confirm that `HEAD` equals
+`@{upstream}` after that push.
+
 **Files:**
 - Import: complete upstream working tree except `.git/`
 - Modify before copy: `README.md:5,303-307` and `CHANGELOG.md:930` in pristine v6.8.0
@@ -139,14 +144,28 @@ test -d modules
 test -d examples
 test -d wrappers
 test -f docs/superpowers/plans/2026-08-12-iam-neutral-derivative.md
+iam_task1_import_diff=$(mktemp)
+if diff -qr --exclude=.git --exclude=.superpowers --exclude=superpowers \
+  "$iam_import_root/source" . > "$iam_task1_import_diff"; then
+  printf 'imported snapshot unexpectedly has no allowed documentation differences\n' >&2
+  exit 1
+else
+  test "$?" -eq 1
+fi
+test "$(wc -l < "$iam_task1_import_diff" | tr -d ' ')" = "2"
+test "$(sed -n \
+  "s|^Files $iam_import_root/source/\\(.*\\) and \\./\\1 differ$|\\1|p" \
+  "$iam_task1_import_diff" | sort)" = "$iam_task1_allowed_files"
 ```
 
 Expected: the upstream tree is present, the planning documents remain present, and no upstream `.git` directory was copied.
 
-The imported Task 1 snapshot must retain the same non-HCL neutrality-edit
-allowlist as the temporary snapshot: only `README.md` and `CHANGELOG.md` may
-differ from upstream for neutrality. `CHANGELOG.md` retains the dated HTML
-notice as its first line; every `*.tf` remains byte-identical.
+The executable imported-snapshot parity check excludes only repository and
+planning artifacts (`.git`, `.superpowers`, and `docs/superpowers`) and proves
+the same non-HCL neutrality-edit allowlist as the temporary snapshot: only
+`README.md` and `CHANGELOG.md` may differ from upstream for neutrality.
+`CHANGELOG.md` retains the dated HTML notice as its first line; every `*.tf`
+remains byte-identical.
 
 - [ ] **Step 6: Add exact provenance**
 

@@ -9,4 +9,5 @@ Status: resolved by user authorization; implementation resumed.
 - At the time of this amendment, no source import, PR, tag, or release has been created.
 
 The authorization resolves the documented blocker. Implementation may resume on
-IAM; no upstream source has been imported at amendment time.
+IAM only after this documentation-only amendment is committed and pushed
+without force; no upstream source has been imported at amendment time.
