@@ -125,7 +125,10 @@ merged. Tagging and release creation are separate post-merge actions.
 ## Planning and execution order
 
 All four repository-specific implementation plans will be written, reviewed,
-committed, and pushed before module import begins.
+committed, and pushed before module import begins. Each plan lives on its own
+repository's neutral branch at
+`docs/superpowers/plans/2026-08-12-<module>-neutral-derivative.md`. This campaign
+design remains the canonical cross-repository design on the IAM neutral branch.
 
 Implementation then proceeds sequentially:
 
@@ -188,8 +191,10 @@ the whole campaign. It will:
    `docs/neutralization/BLOCKER.md` on the feature branch.
 2. Commit and push that record when GitHub remains available.
 3. Open a draft PR when the branch is coherent and reviewable.
-4. Add the branch, commit, PR if any, and blocker summary to the campaign
-   journal maintained with the planning documents.
+4. Add the branch, commit, PR if any, and blocker summary to the canonical
+   `docs/neutralization/CAMPAIGN-STATUS.md` journal on the IAM neutral branch.
+   Push that journal update if GitHub is reachable; otherwise retain the local
+   commit and record the failed push in the same entry.
 5. Move to the next repository without representing the blocked repository as
    complete.
 
