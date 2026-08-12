@@ -145,9 +145,14 @@ test -d examples
 test -d wrappers
 test -f docs/superpowers/plans/2026-08-12-iam-neutral-derivative.md
 iam_task1_parity_root=$(mktemp -d)
-mkdir -p "$iam_task1_parity_root/source" "$iam_task1_parity_root/target"
-for iam_task1_parity_source in "$iam_import_root/source/" ./; do
-  if test "$iam_task1_parity_source" = "$iam_import_root/source/"; then
+mkdir -p "$iam_task1_parity_root/pristine" \
+  "$iam_task1_parity_root/source" "$iam_task1_parity_root/target"
+git -C "$iam_import_root/source" archive --format=tar \
+  --output="$iam_task1_parity_root/pristine.tar" HEAD
+tar -xf "$iam_task1_parity_root/pristine.tar" \
+  -C "$iam_task1_parity_root/pristine"
+for iam_task1_parity_source in "$iam_task1_parity_root/pristine/" ./; do
+  if test "$iam_task1_parity_source" = "$iam_task1_parity_root/pristine/"; then
     iam_task1_parity_destination="$iam_task1_parity_root/source/"
   else
     iam_task1_parity_destination="$iam_task1_parity_root/target/"
@@ -172,13 +177,13 @@ test "$(sed -n \
 
 Expected: the upstream tree is present, the planning documents remain present, and no upstream `.git` directory was copied.
 
-The executable imported-snapshot parity check uses the same root-anchored
-rsync filters for both source and target copies. It excludes only root
-repository and planning artifacts (`/.git` as either a file or directory,
-`/.superpowers/`, and
-`/docs/superpowers/`) and proves the same non-HCL neutrality-edit allowlist as
-the temporary snapshot: only `README.md` and `CHANGELOG.md` may differ from
-upstream for neutrality.
+The executable imported-snapshot parity check materializes the already-verified
+clone's pristine `HEAD` locally with `git archive`, then uses the same
+root-anchored rsync filters for the pristine reference and target copies. It
+excludes only root repository and planning artifacts (`/.git` as either a file
+or directory, `/.superpowers/`, and `/docs/superpowers/`) and proves the same
+non-HCL neutrality-edit allowlist as the temporary snapshot: only `README.md`
+and `CHANGELOG.md` may differ from pristine upstream for neutrality.
 `CHANGELOG.md` retains the dated HTML notice as its first line; every `*.tf`
 remains byte-identical.
 
