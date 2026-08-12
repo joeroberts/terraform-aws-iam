@@ -3,6 +3,7 @@
 
 Terraform module which creates AWS IAM resources.
 
+
 ## Usage
 
 Please refer to the AWS published [IAM Best Practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) for up to date guidance on IAM best practices.
@@ -298,3 +299,4 @@ Module is maintained by [Anton Babenko](https://github.com/antonbabenko) with he
 ## License
 
 Apache-2.0 Licensed. See [LICENSE](https://github.com/terraform-aws-modules/terraform-aws-iam/blob/master/LICENSE).
+
