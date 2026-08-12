@@ -59,13 +59,22 @@ implementation commits to `main` are prohibited.
 ## Neutralization scope
 
 All four upstream snapshots contain nontechnical political repository content
-in their README files. RDS, Aurora, and Security Group additionally expose a
-nontechnical Boolean input that participates in creation logic and is forwarded
-by wrappers. IAM does not expose that input at its selected baseline.
+in their README files. Each also has one known nontechnical changelog entry:
+IAM `CHANGELOG.md:930`, Aurora `CHANGELOG.md:403`, Security Group
+`CHANGELOG.md:194`, and RDS `CHANGELOG.md:385`. RDS, Aurora, and Security
+Group additionally expose a nontechnical Boolean input that participates in
+creation logic and is forwarded by wrappers. IAM does not expose that input at
+its selected baseline.
 
-The implementation will:
+The approved general changelog-removal policy is to remove each identified full
+nontechnical changelog entry during temporary pre-import sanitation and add the
+required dated HTML modification notice as the first line of that file. The
+implementation will:
 
 - Remove the nontechnical README banner and associated prose.
+- Remove the full identified nontechnical changelog entry during temporary
+  pre-import sanitation. The resulting `CHANGELOG.md` must begin with the
+  dated HTML modification notice required for changed upstream-derived files.
 - Remove the nontechnical input and generated documentation entry wherever it
   exists.
 - Remove wrapper forwarding for that input.

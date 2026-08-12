@@ -16,7 +16,7 @@
 - Resolved upstream commit: `d6e381ccfa95b944149c8b14ba4087e517c57ac7`.
 - Reserved release tag: `v6.8.0-neutral.1`; do not create or push it before merge.
 - Preserve the Apache 2.0 license, upstream authorship, provider metadata, and contributor links.
-- Every changed upstream-derived file begins with `Modified by joeroberts/terraform-aws-iam on 2026-08-12; see UPSTREAM.md.` using the file's comment syntax.
+- Every changed upstream-derived file begins with `Modified by joeroberts/terraform-aws-iam on 2026-08-12; see UPSTREAM.md.` using the file's comment syntax. `CHANGELOG.md` begins with that dated HTML notice.
 - Do not import upstream Git history or create a GitHub-native fork relationship.
 - Do not change any Terraform interface or behavior; IAM v6.8.0 has no nontechnical Terraform input to remove.
 - Upstream v6.8.0 contains no `*.tftest.hcl`; exact HCL parity and 24-root init/validate are the focused behavioral checks instead of an empty `terraform test` run.
@@ -28,7 +28,7 @@
 ## File Map
 
 - Import: the complete upstream v6.8.0 working tree except `.git/`.
-- Modify during pre-import sanitation: `README.md` — remove the banner and final nontechnical section.
+- Modify during pre-import sanitation: `README.md` — remove the banner and final nontechnical section; `CHANGELOG.md` — remove the full identified nontechnical bullet and prepend the dated HTML notice as its first line.
 - Modify after import: `README.md`, eight `modules/*/README.md`, and eight `wrappers/*/README.md` — add notices, derivative identity, and pinned Git sources.
 - Modify after import: `.github/workflows/lock.yml`, `pr-title.yml`, `pre-commit.yml`, `release.yml`, and `stale-actions.yaml` — add notices, full-SHA pins, and least-privilege permissions.
 - Create: `UPSTREAM.md` — exact provenance, intentional delta, attribution, and update procedure.
@@ -42,7 +42,7 @@
 
 **Files:**
 - Import: complete upstream working tree except `.git/`
-- Modify before copy: `README.md:5,303-307` in pristine v6.8.0
+- Modify before copy: `README.md:5,303-307` and `CHANGELOG.md:930` in pristine v6.8.0
 - Create: `UPSTREAM.md`
 
 **Interfaces:**
@@ -90,16 +90,21 @@ test -n "$(rg -l -i "$iam_neutral_pattern" "$iam_import_root/source" \
   --hidden --glob '!.git/**')"
 ```
 
-Expected: the assertion passes because the pristine README contains material the derivative forbids. This proves the later zero-match check is meaningful.
+Expected: the assertion passes because the pristine README and CHANGELOG contain
+material the derivative forbids. This proves the later zero-match check is
+meaningful.
 
-- [ ] **Step 4: Neutralize the temporary README before copying**
+- [ ] **Step 4: Neutralize the temporary README and CHANGELOG before copying**
 
 Using `apply_patch` against `$iam_import_root/source/README.md`, delete exactly:
 
 - pristine line 5, the single external political banner; and
 - pristine lines 303-307, the final nontechnical section and its three bullets.
 
-Then prepend this first-line notice to the temporary README:
+Using `apply_patch` against `$iam_import_root/source/CHANGELOG.md`, delete the
+full changelog bullet at pristine line 930 without reproducing its text. Then
+prepend this first-line notice to both temporary files, with the HTML notice as
+the first line of `CHANGELOG.md`:
 
 ```markdown
 <!-- Modified by joeroberts/terraform-aws-iam on 2026-08-12; see UPSTREAM.md. -->
@@ -113,9 +118,14 @@ if rg -n -i "$iam_neutral_pattern" "$iam_import_root/source" \
   printf 'temporary source neutrality check failed\n' >&2
   exit 1
 fi
+iam_task1_allowed_files="$(printf '%s\n' CHANGELOG.md README.md)"
+test "$(git -C "$iam_import_root/source" diff --name-only | sort)" = \
+  "$iam_task1_allowed_files"
 ```
 
-Expected: no matches and exit status 0.
+Expected: no matches and exit status 0. The temporary-snapshot parity
+allowlist contains only `README.md` and `CHANGELOG.md`; all HCL remains
+byte-identical to upstream.
 
 - [ ] **Step 5: Copy only the sanitized working tree**
 
@@ -132,6 +142,11 @@ test -f docs/superpowers/plans/2026-08-12-iam-neutral-derivative.md
 ```
 
 Expected: the upstream tree is present, the planning documents remain present, and no upstream `.git` directory was copied.
+
+The imported Task 1 snapshot must retain the same non-HCL neutrality-edit
+allowlist as the temporary snapshot: only `README.md` and `CHANGELOG.md` may
+differ from upstream for neutrality. `CHANGELOG.md` retains the dated HTML
+notice as its first line; every `*.tf` remains byte-identical.
 
 - [ ] **Step 6: Add exact provenance**
 
@@ -196,7 +211,10 @@ git commit -m "feat: import neutral IAM module v6.8.0"
 git push
 ```
 
-Expected: one import commit is pushed; no target commit contains the pristine nontechnical README content.
+Expected: one import commit is pushed; no target commit contains the pristine
+nontechnical README content or the removed CHANGELOG bullet. The Task 1
+non-HCL neutrality-edit allowlist contains only `README.md` and
+`CHANGELOG.md`.
 
 ---
 
@@ -504,9 +522,10 @@ Run:
 
 ```bash
 iam_notice='Modified by joeroberts/terraform-aws-iam on 2026-08-12; see UPSTREAM.md.'
-for iam_notice_file in README.md modules/*/README.md wrappers/*/README.md .github/workflows/*; do
+for iam_notice_file in README.md CHANGELOG.md modules/*/README.md wrappers/*/README.md .github/workflows/*; do
   head -n 1 "$iam_notice_file" | rg -Fq "$iam_notice"
 done
+head -n 1 CHANGELOG.md | rg -Fx '<!-- Modified by joeroberts/terraform-aws-iam on 2026-08-12; see UPSTREAM.md. -->'
 if rg -n 'source\s*=\s*"(terraform-aws-modules/iam/aws|tfr:///terraform-aws-modules/iam/aws)' \
   README.md modules wrappers -g README.md; then exit 1; fi
 if rg -n -P 'uses:\s+[^\s#]+@(?![0-9a-f]{40}(?:\s|$))' .github/workflows; then exit 1; fi
