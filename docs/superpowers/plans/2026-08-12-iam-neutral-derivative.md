@@ -152,7 +152,7 @@ for iam_task1_parity_source in "$iam_import_root/source/" ./; do
   else
     iam_task1_parity_destination="$iam_task1_parity_root/target/"
   fi
-  rsync -a --exclude='/.git/' --exclude='/.superpowers/' \
+  rsync -a --exclude='/.git' --exclude='/.superpowers/' \
     --exclude='/docs/superpowers/' "$iam_task1_parity_source" \
     "$iam_task1_parity_destination"
 done
@@ -174,7 +174,8 @@ Expected: the upstream tree is present, the planning documents remain present, a
 
 The executable imported-snapshot parity check uses the same root-anchored
 rsync filters for both source and target copies. It excludes only root
-repository and planning artifacts (`/.git/`, `/.superpowers/`, and
+repository and planning artifacts (`/.git` as either a file or directory,
+`/.superpowers/`, and
 `/docs/superpowers/`) and proves the same non-HCL neutrality-edit allowlist as
 the temporary snapshot: only `README.md` and `CHANGELOG.md` may differ from
 upstream for neutrality.
