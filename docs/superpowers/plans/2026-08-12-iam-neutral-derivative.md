@@ -244,7 +244,8 @@ Run:
 
 ```bash
 terraform fmt -check -recursive
-git diff --check
+git diff --check -- . ':(top,exclude)README.md'
+git -c core.whitespace=-blank-at-eof diff --check -- README.md
 git add . ':!docs/superpowers'
 git commit -m "feat: import neutral IAM module v6.8.0"
 git push
@@ -253,7 +254,13 @@ git push
 Expected: one import commit is pushed; no target commit contains the pristine
 nontechnical README content or the removed CHANGELOG bullet. The Task 1
 non-HCL neutrality-edit allowlist contains only `README.md` and
-`CHANGELOG.md`.
+`CHANGELOG.md`. The first whitespace command runs Git's default checks for
+every path except the root `README.md`; the README-only command disables only
+Git's `blank-at-eof` diagnostic, so trailing whitespace and every other
+enabled whitespace error still fail. This narrow exception relies on the
+byte-exact pristine transformation and imported-snapshot parity proofs in
+Steps 4, 5, and 7, which authorize no other `README.md` delta. The default
+whitespace and clean-tree gates in later tasks remain unchanged.
 
 ---
 
