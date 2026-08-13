@@ -1,3 +1,4 @@
+<!-- Modified by joeroberts/terraform-aws-iam on 2026-08-13; see ../../UPSTREAM.md. -->
 # AWS IAM Role Terraform Module
 
 Creates a single IAM role which can be assumed by trusted resources.
@@ -10,12 +11,12 @@ The defaults provided by the module are suitable for GitHub Free, Pro, & Team, i
 
 ```hcl
 module "iam_role" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-role"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 
   enable_github_oidc = true
 
   # This should be updated to suit your organization, repository, references/branches, etc.
-  oidc_wildcard_subjects = ["terraform-aws-modules/terraform-aws-iam:*"]
+  oidc_wildcard_subjects = ["joeroberts/terraform-aws-iam:*"]
 
   policies = {
     S3ReadOnly = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
@@ -33,7 +34,7 @@ For GitHub Enterprise Server, users will need to provide value for the `oidc_aud
 
 ```hcl
 module "iam_role" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-role"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 
   enable_github_oidc = true
 
@@ -57,7 +58,7 @@ module "iam_role" {
 
 ```hcl
 module "iam_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 
   name = "example"
 
@@ -103,7 +104,7 @@ Creates an IAM role that trusts a SAML provider. Useful for trusting external id
 
 ```hcl
 module "iam_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 
   name = "example"
 
@@ -203,4 +204,4 @@ No modules.
 
 ## License
 
-Apache-2.0 Licensed. See [LICENSE](https://github.com/terraform-aws-modules/terraform-aws-iam/blob/master/LICENSE).
+Apache-2.0 Licensed. See [LICENSE](https://github.com/joeroberts/terraform-aws-iam/blob/v6.8.0-neutral.1/LICENSE).

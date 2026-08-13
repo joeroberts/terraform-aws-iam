@@ -1,3 +1,4 @@
+<!-- Modified by joeroberts/terraform-aws-iam on 2026-08-13; see ../../UPSTREAM.md. -->
 # Wrapper for module: `modules/iam-user`
 
 The configuration in this directory contains an implementation of a single module wrapper pattern, which allows managing several copies of a module in places where using the native Terraform 0.13+ `for_each` feature is not feasible (e.g., with Terragrunt).
@@ -12,9 +13,7 @@ This wrapper does not implement any extra functionality.
 
 ```hcl
 terraform {
-  source = "tfr:///terraform-aws-modules/iam/aws//wrappers/iam-user"
-  # Alternative source:
-  # source = "git::git@github.com:terraform-aws-modules/terraform-aws-iam.git//wrappers/iam-user?ref=master"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//wrappers/iam-user?ref=v6.8.0-neutral.1"
 }
 
 inputs = {
@@ -42,7 +41,7 @@ inputs = {
 
 ```hcl
 module "wrapper" {
-  source = "terraform-aws-modules/iam/aws//wrappers/iam-user"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//wrappers/iam-user?ref=v6.8.0-neutral.1"
 
   defaults = { # Default values
     create = true
@@ -70,9 +69,7 @@ module "wrapper" {
 
 ```hcl
 terraform {
-  source = "tfr:///terraform-aws-modules/iam/aws//wrappers/iam-user"
-  # Alternative source:
-  # source = "git::git@github.com:terraform-aws-modules/terraform-aws-iam.git//wrappers/iam-user?ref=master"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//wrappers/iam-user?ref=v6.8.0-neutral.1"
 }
 
 inputs = {

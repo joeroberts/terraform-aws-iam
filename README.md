@@ -3,6 +3,11 @@
 
 Terraform module which creates AWS IAM resources.
 
+This is an independently maintained derivative of
+[`terraform-aws-modules/terraform-aws-iam`](https://github.com/terraform-aws-modules/terraform-aws-iam),
+based on upstream v6.8.0. See [UPSTREAM.md](UPSTREAM.md) for provenance and
+neutralization details.
+
 
 ## Usage
 
@@ -14,7 +19,7 @@ Creates an account policy and account alias. Module instantiation is once per ac
 
 ```hcl
 module "iam_account" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-account"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-account?ref=v6.8.0-neutral.1"
 
   account_alias = "awesome-company"
 
@@ -35,7 +40,7 @@ Creates an IAM group with IAM policy attached that one or more users can be adde
 
 ```hcl
 module "iam_group" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-group"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-group?ref=v6.8.0-neutral.1"
 
   name = "superadmins"
 
@@ -72,7 +77,7 @@ Creates an OpenID connect provider. Useful for trusting external identity provid
 
 ```hcl
 module "iam_oidc_provider" {
-  source    = "terraform-aws-modules/iam/aws//modules/iam-oidc-provider"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-oidc-provider?ref=v6.8.0-neutral.1"
 
   url = "https://token.actions.githubusercontent.com"
 
@@ -89,7 +94,7 @@ Creates an IAM policy.
 
 ```hcl
 module "iam_policy" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-policy?ref=v6.8.0-neutral.1"
 
   name        = "example"
   path        = "/"
@@ -123,7 +128,7 @@ Creates an IAM policy that allows read-only access to the list of AWS services p
 
 ```hcl
 module "iam_read_only_policy" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-read-only-policy"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-read-only-policy?ref=v6.8.0-neutral.1"
 
   name        = "example"
   path        = "/"
@@ -144,7 +149,7 @@ Creates an IAM role with a trust policy and (optional) IAM instance profile. Use
 
 ```hcl
 module "iam_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 
   name = "example"
 
@@ -187,12 +192,12 @@ Creates an IAM role that trusts an OpenID connect provider. Useful for trusting 
 
 ```hcl
 module "iam_role_github_oidc" {
-  source    = "terraform-aws-modules/iam/aws//modules/iam-role"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 
   enable_github_oidc = true
 
   # This should be updated to suit your organization, repository, references/branches, etc.
-  oidc_wildcard_subjects = ["terraform-aws-modules/terraform-aws-iam:*"]
+  oidc_wildcard_subjects = ["joeroberts/terraform-aws-iam:*"]
 
   policies = {
     S3ReadOnly = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
@@ -211,7 +216,7 @@ Creates an IAM role that trusts a SAML provider. Useful for trusting external id
 
 ```hcl
 module "iam_role_saml" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 
   name = "example"
 
@@ -239,7 +244,7 @@ Creates an IAM role that is suitable for EKS IAM role for service accounts (IRSA
 
 ```hcl
 module "vpc_cni_irsa" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role-for-service-accounts?ref=v6.8.0-neutral.1"
 
   name   = "vpc-cni"
 
@@ -266,7 +271,7 @@ Creates an IAM user with ability to create a login profile, access key, and SSH 
 
 ```hcl
 module "iam_user" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-user"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-user?ref=v6.8.0-neutral.1"
 
   name = "vasya.pupkin"
 
@@ -283,20 +288,21 @@ module "iam_user" {
 
 ## Examples
 
-- [iam-account](https://github.com/terraform-aws-modules/terraform-aws-iam/tree/master/examples/iam-account) - Set AWS account alias and password policy
-- [iam-group](https://github.com/terraform-aws-modules/terraform-aws-iam/tree/master/examples/iam-group) - IAM group with users who are allowed to assume IAM roles in another AWS account and have access to specified IAM policies
-- [iam-oidc-provider](https://github.com/terraform-aws-modules/terraform-aws-iam/tree/master/examples/iam-oidc-provider) - Create an OpenID connect provider and IAM role which can be assumed from specified subjects federated from the OIDC provider
-- [iam-policy](https://github.com/terraform-aws-modules/terraform-aws-iam/tree/master/examples/iam-policy) - Create an IAM policy
-- [iam-read-only-policy](https://github.com/terraform-aws-modules/terraform-aws-iam/tree/master/examples/iam-read-only-policy) - Create IAM read-only policy
-- [iam-role](https://github.com/terraform-aws-modules/terraform-aws-iam/tree/master/examples/iam-role) - Create individual IAM role which can be assumed from specified ARNs (AWS accounts, IAM users, etc)
-- [iam-role-for-service-accounts](https://github.com/terraform-aws-modules/terraform-aws-iam/tree/master/examples/iam-role-for-service-accounts) - Create IAM role for service accounts (IRSA) for use within EKS clusters
-- [iam-user](https://github.com/terraform-aws-modules/terraform-aws-iam/tree/master/examples/iam-user) - Add IAM user, login profile and access keys (with PGP enabled or disabled)
+- [iam-account](https://github.com/joeroberts/terraform-aws-iam/tree/v6.8.0-neutral.1/examples/iam-account) - Set AWS account alias and password policy
+- [iam-group](https://github.com/joeroberts/terraform-aws-iam/tree/v6.8.0-neutral.1/examples/iam-group) - IAM group with users who are allowed to assume IAM roles in another AWS account and have access to specified IAM policies
+- [iam-oidc-provider](https://github.com/joeroberts/terraform-aws-iam/tree/v6.8.0-neutral.1/examples/iam-oidc-provider) - Create an OpenID connect provider and IAM role which can be assumed from specified subjects federated from the OIDC provider
+- [iam-policy](https://github.com/joeroberts/terraform-aws-iam/tree/v6.8.0-neutral.1/examples/iam-policy) - Create an IAM policy
+- [iam-read-only-policy](https://github.com/joeroberts/terraform-aws-iam/tree/v6.8.0-neutral.1/examples/iam-read-only-policy) - Create IAM read-only policy
+- [iam-role](https://github.com/joeroberts/terraform-aws-iam/tree/v6.8.0-neutral.1/examples/iam-role) - Create individual IAM role which can be assumed from specified ARNs (AWS accounts, IAM users, etc)
+- [iam-role-for-service-accounts](https://github.com/joeroberts/terraform-aws-iam/tree/v6.8.0-neutral.1/examples/iam-role-for-service-accounts) - Create IAM role for service accounts (IRSA) for use within EKS clusters
+- [iam-user](https://github.com/joeroberts/terraform-aws-iam/tree/v6.8.0-neutral.1/examples/iam-user) - Add IAM user, login profile and access keys (with PGP enabled or disabled)
 
 ## Authors
 
-Module is maintained by [Anton Babenko](https://github.com/antonbabenko) with help from [these awesome contributors](https://github.com/terraform-aws-modules/terraform-aws-iam/graphs/contributors).
+This derivative is maintained by [joeroberts](https://github.com/joeroberts).
+Original authorship and contributor credit are preserved in the
+[upstream contributor history](https://github.com/terraform-aws-modules/terraform-aws-iam/graphs/contributors).
 
 ## License
 
-Apache-2.0 Licensed. See [LICENSE](https://github.com/terraform-aws-modules/terraform-aws-iam/blob/master/LICENSE).
-
+Apache-2.0 Licensed. See [LICENSE](https://github.com/joeroberts/terraform-aws-iam/blob/v6.8.0-neutral.1/LICENSE).

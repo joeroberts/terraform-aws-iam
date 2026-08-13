@@ -1,3 +1,4 @@
+<!-- Modified by joeroberts/terraform-aws-iam on 2026-08-13; see ../../UPSTREAM.md. -->
 # AWS IAM Role for EKS Service Accounts Terraform Module
 
 > [!TIP]
@@ -33,7 +34,7 @@ This module supports multiple `ServiceAccount`s across multiple clusters and/or 
 
 ```hcl
 module "irsa" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role-for-service-accounts?ref=v6.8.0-neutral.1"
 
   name = "my-app"
 
@@ -58,7 +59,7 @@ This module has been designed in conjunction with the [`terraform-aws-eks`](http
 
 ```hcl
 module "ebs_csi_driver_irsa" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role-for-service-accounts?ref=v6.8.0-neutral.1"
 
   name = "ebs-csi"
 
@@ -248,4 +249,4 @@ No modules.
 
 ## License
 
-Apache-2.0 Licensed. See [LICENSE](https://github.com/terraform-aws-modules/terraform-aws-iam/blob/master/LICENSE).
+Apache-2.0 Licensed. See [LICENSE](https://github.com/joeroberts/terraform-aws-iam/blob/v6.8.0-neutral.1/LICENSE).

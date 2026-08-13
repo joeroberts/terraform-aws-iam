@@ -1,3 +1,4 @@
+<!-- Modified by joeroberts/terraform-aws-iam on 2026-08-13; see ../../UPSTREAM.md. -->
 # AWS IAM OIDC Provider
 
 Creates an OpenID connect provider. Useful for trusting external identity providers such as GitHub, Bitbucket, etc.
@@ -12,7 +13,7 @@ See more details [here](https://docs.github.com/en/actions/deployment/security-h
 
 ```hcl
 module "iam_oidc_provider" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-oidc-provider"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-oidc-provider?ref=v6.8.0-neutral.1"
 
   url = "https://token.actions.githubusercontent.com"
 
@@ -28,7 +29,7 @@ See more details [here](https://support.atlassian.com/bitbucket-cloud/docs/integ
 
 ```hcl
 module "iam_oidc_provider" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-oidc-provider"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-oidc-provider?ref=v6.8.0-neutral.1"
 
   url = "https://api.bitbucket.org/2.0/workspaces/example-workspace/pipelines-config/identity/oidc"
 
@@ -85,4 +86,4 @@ No modules.
 
 ## License
 
-Apache-2.0 Licensed. See [LICENSE](https://github.com/terraform-aws-modules/terraform-aws-iam/blob/master/LICENSE).
+Apache-2.0 Licensed. See [LICENSE](https://github.com/joeroberts/terraform-aws-iam/blob/v6.8.0-neutral.1/LICENSE).

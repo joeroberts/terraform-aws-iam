@@ -1,3 +1,4 @@
+# Modified by joeroberts/terraform-aws-iam on 2026-08-13; see ../../UPSTREAM.md.
 provider "aws" {
   region = "eu-west-1"
 }
@@ -8,7 +9,7 @@ locals {
   tags = {
     Example    = local.name
     GithubRepo = "terraform-aws-iam"
-    GithubOrg  = "terraform-aws-modules"
+    GithubOrg  = "joeroberts"
   }
 }
 

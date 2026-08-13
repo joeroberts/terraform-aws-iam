@@ -1,3 +1,4 @@
+<!-- Modified by joeroberts/terraform-aws-iam on 2026-08-13; see ../../UPSTREAM.md. -->
 # AWS IAM ReadOnly Policy Terraform Module
 
 Creates an IAM policy that allows read-only access to the list of AWS services provided.
@@ -8,7 +9,7 @@ Default AWS read-only policies (arn:aws:iam::aws:policy/job-function/ViewOnlyAcc
 
 ```hcl
 module "iam_read_only_policy" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-read-only-policy"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-read-only-policy?ref=v6.8.0-neutral.1"
 
   name        = "example"
   path        = "/"
@@ -80,4 +81,4 @@ No modules.
 
 ## License
 
-Apache-2.0 Licensed. See [LICENSE](https://github.com/terraform-aws-modules/terraform-aws-iam/blob/master/LICENSE).
+Apache-2.0 Licensed. See [LICENSE](https://github.com/joeroberts/terraform-aws-iam/blob/v6.8.0-neutral.1/LICENSE).

@@ -1,6 +1,7 @@
+<!-- Modified by joeroberts/terraform-aws-iam on 2026-08-13; see ../UPSTREAM.md. -->
 # Upgrade from v5.x to v6.x
 
-If you have any questions regarding this upgrade process, please consult the [`examples`](https://github.com/terraform-aws-modules/terraform-aws-iam/tree/master/examples/) directory:
+If you have any questions regarding this upgrade process, please consult the [`examples`](https://github.com/joeroberts/terraform-aws-iam/tree/v6.8.0-neutral.1/examples/) directory:
 
 If you find a bug, please open an issue with supporting configuration to reproduce.
 
@@ -305,9 +306,8 @@ None
 ```diff
 module "iam_role" {
 -  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-+  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
++  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 -  version = "~> 5.60"
-+  version = "~> 6.0"
 
 -  create_role = true
 +  create = true # is now `true` by default
@@ -377,9 +377,8 @@ terraform state rm module.iam_role.aws_iam_role_policy_attachment.custom
 ```diff
 module "iam_role" {
 -  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-+  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
++  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 -  version = "~> 5.60"
-+  version = "~> 6.0"
 
 +  enable_oidc = true
 
@@ -421,9 +420,8 @@ terraform state rm module.iam_role.aws_iam_role_policy_attachment.custom
 ```diff
 module "iam_role" {
 -  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-saml"
-+  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
++  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 -  version = "~> 5.60"
-+  version = "~> 6.0"
 
 +  enable_saml       = true
 -  provider_id  = aws_iam_saml_provider.idp_saml.id
@@ -496,8 +494,7 @@ module "iam_assumable_roles" {
 
 ```hcl
 module "iam_role_admin" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
-  version = "~> 6.0"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 
   name = "admin"
 
@@ -529,8 +526,7 @@ module "iam_role_admin" {
 }
 
 module "iam_role_poweruser" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
-  version = "~> 6.0"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 
   name = "Billing-And-Support-Access"
 
@@ -612,8 +608,7 @@ resource "aws_iam_saml_provider" "second_idp_saml" {
 
 ```hcl
 module "iam_role_admin" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
-  version = "~> 6.0"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 
   name = "admin"
 
@@ -629,8 +624,7 @@ module "iam_role_admin" {
 }
 
 module "iam_role_poweruser" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
-  version = "~> 6.0"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 
   name = "poweruser"
 
@@ -664,9 +658,8 @@ terraform state rm module.iam_assumable_roles.aws_iam_role_policy_attachment.pow
 ```diff
 module "irsa" {
 -  source  = "terraform-aws-modules/iam/aws//modules/iam-eks-role"
-+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts"
++  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role-for-service-accounts?ref=v6.8.0-neutral.1"
 -  version = "~> 5.60"
-+  version = "~> 6.0"
 
 -  role_name = "example"
 +  name = "example"
@@ -693,16 +686,15 @@ module "irsa" {
 ```diff
 module "iam_role" {
 -  source  = "terraform-aws-modules/iam/aws//modules/iam-github-oidc-role"
-+  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
++  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-role?ref=v6.8.0-neutral.1"
 -  version = "~> 5.60"
-+  version = "~> 6.0"
 
 +  enable_github_oidc = true
 
 -  subjects = [
 +  oidc_subjects = [
-    "terraform-aws-modules/terraform-aws-iam:pull_request",
-    "terraform-aws-modules/terraform-aws-iam:ref:refs/heads/master",
+    "joeroberts/terraform-aws-iam:pull_request",
+    "joeroberts/terraform-aws-iam:ref:refs/heads/main",
   ]
 
 -  additional_trust_policy_conditions = [
@@ -725,9 +717,8 @@ module "iam_role" {
 ```diff
 module "iam_group" {
 -  source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-assumable-roles-policy"
-+  source  = "terraform-aws-modules/iam/aws//modules/iam-group"
++  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-group?ref=v6.8.0-neutral.1"
 -  version = "~> 5.60"
-+  version = "~> 6.0"
 
   # To preserve backwards compatibility
   policy_use_name_prefix             = false
@@ -750,8 +741,9 @@ module "iam_group" {
 }
 
 module "iam_user" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-user"
-  version = "~> 5.60"
+-  source  = "terraform-aws-modules/iam/aws//modules/iam-user"
+-  version = "~> 5.60"
++  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-user?ref=v6.8.0-neutral.1"
 
   name = "user"
 
@@ -765,9 +757,8 @@ module "iam_user" {
 ```diff
 module "iam_group" {
 -  source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
-+  source  = "terraform-aws-modules/iam/aws//modules/iam-group"
++  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-group?ref=v6.8.0-neutral.1"
 -  version = "~> 5.60"
-+  version = "~> 6.0"
 
   # To preserve backwards compatibility
   policy_name = "IAMSelfManagement"
@@ -784,8 +775,9 @@ module "iam_group" {
 }
 
 module "iam_user" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-user"
-  version = "~> 5.60"
+-  source  = "terraform-aws-modules/iam/aws//modules/iam-user"
+-  version = "~> 5.60"
++  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-user?ref=v6.8.0-neutral.1"
 
   name = "user"
 
@@ -819,9 +811,9 @@ TODO - coming soon after `v6.0.1` patch release
 
 ```diff
 module "iam_user" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-user"
+-  source  = "terraform-aws-modules/iam/aws//modules/iam-user"
 -  version = "~> 5.60"
-+  version = "~> 6.0"
++  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-user?ref=v6.8.0-neutral.1"
 
 -  policy_arns = ["arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"]
 +  policies = {

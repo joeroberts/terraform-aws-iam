@@ -1,3 +1,4 @@
+# Modified by joeroberts/terraform-aws-iam on 2026-08-13; see ../../UPSTREAM.md.
 provider "aws" {
   region = "eu-west-1"
 }
@@ -8,7 +9,7 @@ locals {
   tags = {
     Example    = local.name
     GithubRepo = "terraform-aws-iam"
-    GithubOrg  = "terraform-aws-modules"
+    GithubOrg  = "joeroberts"
   }
 }
 
@@ -43,8 +44,8 @@ module "github_oidc_iam_role" {
   # This should be updated to suit your organization, repository, references/branches, etc.
   oidc_subjects = [
     # You can prepend with `repo:` but it is not required
-    "repo:terraform-aws-modules/terraform-aws-iam:pull_request",
-    "terraform-aws-modules/terraform-aws-iam:ref:refs/heads/master",
+    "repo:joeroberts/terraform-aws-iam:pull_request",
+    "joeroberts/terraform-aws-iam:ref:refs/heads/main",
   ]
 
   policies = {

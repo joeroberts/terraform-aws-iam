@@ -1,3 +1,4 @@
+<!-- Modified by joeroberts/terraform-aws-iam on 2026-08-13; see ../../UPSTREAM.md. -->
 # AWS IAM Account Terraform Module
 
 Creates an account policy and account alias. Module instantiation is once per account.
@@ -6,7 +7,7 @@ Creates an account policy and account alias. Module instantiation is once per ac
 
 ```hcl
 module "iam_account" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-account"
+  source = "git::https://github.com/joeroberts/terraform-aws-iam.git//modules/iam-account?ref=v6.8.0-neutral.1"
 
   account_alias = "awesome-company"
 
@@ -93,4 +94,4 @@ No modules.
 
 ## License
 
-Apache-2.0 Licensed. See [LICENSE](https://github.com/terraform-aws-modules/terraform-aws-iam/blob/master/LICENSE).
+Apache-2.0 Licensed. See [LICENSE](https://github.com/joeroberts/terraform-aws-iam/blob/v6.8.0-neutral.1/LICENSE).

@@ -1,3 +1,4 @@
+# Modified by joeroberts/terraform-aws-iam on 2026-08-13; see ../../UPSTREAM.md.
 terraform {
   required_version = ">= 1.5.7"
 
@@ -10,7 +11,7 @@ terraform {
 
   provider_meta "aws" {
     user_agent = [
-      "github.com/terraform-aws-modules/terraform-aws-iam"
+      "github.com/joeroberts/terraform-aws-iam"
     ]
   }
 }
